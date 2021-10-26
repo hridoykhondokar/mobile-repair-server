@@ -42,16 +42,16 @@ client.connect(err => {
 
   app.get('/getPlans', (req, res) => {
     planCollection.find({})
-     .toArray((err,document)=>{
-      res.send(document)
-     })
+      .toArray((err, document) => {
+        res.send(document)
+      })
   })
 
   app.get('/getPlan/:_id', (req, res) => {
     planCollection.find({ _id: ObjectId(req.params._id) })
-    .toArray((err,document)=>{
-      res.send(document)
-    })
+      .toArray((err, document) => {
+        res.send(document)
+      })
   })
 
   app.post('/userInfo', (req, res) => {
@@ -65,32 +65,42 @@ client.connect(err => {
 
   app.get('/plansDetails', (req, res) => {
     userCollection.find({})
-    .toArray((err,document)=>{
-      res.send(document)
-    })
+      .toArray((err, document) => {
+        res.send(document)
+      })
   })
 
 
   app.get('/plansDetails/:email', (req, res) => {
     userCollection.find({ email: req.params.email })
-    .toArray((err,document)=>{
-      res.send(document)
-    })
+      .toArray((err, document) => {
+        res.send(document)
+      })
   })
 
-  app.post('/addAdmin',(req, res) => {
+  app.post('/addAdmin', (req, res) => {
     const data = req.body;
     adminCollection.insertOne(data)
-    .then(result => {
-      res.send(result)
-    })
+      .then(result => {
+        res.send(result)
+      })
   })
 
   app.get('/admin/:email', (req, res) => {
     adminCollection.find({ email: req.params.email })
-    .toArray((err,document)=>{
-      res.send(document)
-    })
+      .toArray((err, document) => {
+        res.send(document)
+      })
+  })
+
+  app.patch('/updateStatus/:id', (req, res) => {
+    userCollection.updateOne({ _id: ObjectId(req.params.id)},
+      {
+        $set: { status: req.body.status }
+      })
+      .then(result => {
+        res.send(result.modifiedCount > 0)
+      })
   })
 
 
